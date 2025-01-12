@@ -21,11 +21,4 @@ export function getConnection() {
 
 
 
-// const mongo = require("mongoose")
-// const MoyuCounter = mongo.model("MoyuCounter", new mongo.Schema({
-//   room_wxid:String,
-//   wxid:String,
-//   day:String,
-//   count:Number
-// }))
 

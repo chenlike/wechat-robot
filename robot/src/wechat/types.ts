@@ -200,8 +200,20 @@ export interface WechatMsg{
     /**
      * timestamp 1736497896
      */
-    ts:string,
+    ts:number,
 
+    /**
+     * 消息类型
+     */
+    type:number,
+
+    
+    /**
+     * 发送时间 yyyy-MM-dd HH:mm:ss
+     */
+    time:string,
+
+    
     /**
      * 来源 群聊id
      */

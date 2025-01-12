@@ -36,6 +36,6 @@ export function initWeb() {
     initRoutes()
 
     app.listen(port, hostname, () => {
-        logger.info(`web listening at http://${hostname}:${port}`)
+        logger.info(`web 监听: http://${hostname}:${port}`)
     })
 }

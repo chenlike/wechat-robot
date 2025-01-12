@@ -13,11 +13,11 @@ function useWebsocketCallback(){
     const ws = new WebSocket(process.env.DEBUG_WS_CALLBACK ?? "");
 
     ws.on("open", () => {
-        logger.info("Connected to websocket server at " + process.env.DEBUG_WS_CALLBACK);
+        logger.info("已连接WS 服务器  " + process.env.DEBUG_WS_CALLBACK);
     });
     
     ws.on("close", () => {
-        logger.info("Disconnected from websocket server at " + process.env.DEBUG_WS_CALLBACK);
+        logger.info("断开连接 " + process.env.DEBUG_WS_CALLBACK);
     });
 
     // ws.on("message", (data) => {
@@ -32,7 +32,7 @@ function useWebsocketCallback(){
 
 
 
-export default {
+export {
     useWebsocketCallback
 }
 
