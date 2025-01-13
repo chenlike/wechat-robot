@@ -38,7 +38,7 @@ export default {
 					dest: "./dist"
 				},
 				{
-					src:"./src/.env",
+					src:"./.env",
 					dest:"./dist"
 				}
 			]

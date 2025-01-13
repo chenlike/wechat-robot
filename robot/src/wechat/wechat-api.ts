@@ -1,17 +1,17 @@
-import axios from 'axios';
+import axios,{AxiosInstance} from 'axios';
 
-// import * from "./wechat."
+import * as t from "./types"
 
-const host = process.env.WECHATFERRY_HOST || ""
 
 const http = axios.create({
-    baseURL: host,
+
 })
 
 
+export function initApiHost(host:string){
+    http.defaults.baseURL = host
+}
 
-
-import * as t from "./types"
 
 
 /**

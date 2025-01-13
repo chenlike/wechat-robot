@@ -8,7 +8,6 @@ const state = {
 
 export async function initDatabase() {
 
-
   state.conn = await mongoose.connect(process.env.MONGODB_CONNECTION ?? "");
   mongoose.set("overwriteModels",true)
 

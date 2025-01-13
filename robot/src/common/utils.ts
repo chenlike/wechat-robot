@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import axios from "axios"
+import axios from "axios";
+import crypto  from "crypto";
 /**
  * 解码微信图片
  * @param imagePath  图片地址
@@ -91,4 +92,10 @@ export function guid() {
         return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
     }
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+export function MD5(str: string) {
+    let md5 = crypto.createHash('md5');
+    md5.update(str);
+    return md5.digest('hex');
 }
