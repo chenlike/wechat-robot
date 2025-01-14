@@ -4,6 +4,9 @@ import logger from "@/common/logger";
 import session from "express-session"
 import bodyParser from "body-parser"
 
+
+import callbackRoutes from "./controller/callback";
+
 const app = express()
 
 
@@ -22,6 +25,7 @@ function initRoutes() {
     app.use(bodyParser.json())
 
 
+    callbackRoutes(app)
 
 }
 

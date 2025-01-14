@@ -42,7 +42,6 @@ export class WechatControl {
             await WxMessages.create(msg)
 
             state.emitter.emit("message", msg)
-
     
         } catch (e) {
             logger.error(e)

@@ -6,8 +6,9 @@ import logger from "@/common/logger";
 import { initDatabase } from "@/common/database";
 import { initWeb } from "@/web";
 import { initWechat } from "@/wechat"
-import { initPlugin } from "@/plugin"
-
+import { initPlugins } from "@/plugin"
+import { initDispatch } from "@/dispatch"
+import { initBasicService } from "@/basic-service"
 
 async function main() {
     logger.info("[初始化数据库database]")
@@ -21,9 +22,15 @@ async function main() {
     initWechat()
 
 
-    logger.info("[初始化插件Plugin]")
-    await initPlugin()
+    logger.info("[初始化基础服务Service]")
+    initBasicService();
 
+    logger.info("[初始化插件Plugin]")
+    await initPlugins()
+
+    
+    logger.info("[初始化消息分发]")
+    await initDispatch()
 
 
 }

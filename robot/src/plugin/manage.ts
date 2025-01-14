@@ -25,14 +25,18 @@ function genPluginFile(plugin: WxPlugin) {
 
 
 
-
 /**
  * 初始化数据 
  */
 async function initLoadPlugins() {
+
+
     state.wxPlugins = await WxPlugins.find({});
 
     state.wxChatRoomPlugins = await WxChatRoomPlugins.find({})
+
+
+
 
     // 加载插件
     state.wxPlugins.forEach(plugin => {
@@ -85,6 +89,14 @@ async function getPluginFromDb(pluginId: string) {
     return await WxPlugins.findOne({ pluginId })
 }
 
+/**
+ * 
+ * @param chatroomId 
+ * @returns 
+ */
+function getPluginsInChatroom(chatroomId:string){
+    return state.wxChatRoomPlugins.filter(plugin=> plugin.chatroomId === chatroomId && plugin.enable == true)
+}
 
 
 async function addPlugin(plugin: WxPlugin):Promise<Result> {
@@ -138,3 +150,10 @@ export async function initPlugins() {
 
 
 
+export{
+    getPluginFromDb,
+    addPlugin,
+    updatePlugin,
+    reloadPlugins,
+    getPluginsInChatroom
+}

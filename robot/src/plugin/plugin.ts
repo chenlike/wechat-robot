@@ -1,5 +1,6 @@
 import logger from "@/common/logger";
 import { Context,Service,ForkScope } from 'cordis'
+import { emitter } from "./emitter";
 
 
 
@@ -25,7 +26,7 @@ function loadPlugin(filePath: string){
 }
 
 
-export async function addPlugin(plugin: WxPlugin){
+export async function loadNewPlugin(plugin: WxPlugin){
 
 
     // 是否已经存在
@@ -90,18 +91,9 @@ export async function getPluginScope(pluginId: string){
 
 
 
-
-
-/**
- * 初始化插件
- */
-export async function initPlugin(){
-    
-
-
-}
-
-
-
-
-
+emitter.on("reloadPlugin",(data)=>{
+    loadNewPlugin({
+        pluginId:data.pluginId,
+        filePath:data.filePath,
+    })
+})

@@ -18,9 +18,6 @@ export class WechatService extends Service {
 
     // 把api的function都挂在到service上
     public api:typeof api = api
-
-
-
     
 
 
