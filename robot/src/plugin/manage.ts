@@ -17,6 +17,12 @@ const state = {
  */
 function genPluginFile(plugin: WxPlugin) {
     let genFileName = MD5(plugin.pluginId) + ".js"
+
+    // 如果文件夹不存在则创建
+    if (!fs.existsSync(path.resolve(__dirname, './plugins'))) {
+        fs.mkdirSync(path.resolve(__dirname, './plugins'))
+    }
+
     let fullPath = path.resolve(__dirname,`./plugins/${genFileName}`)
     fs.writeFileSync(fullPath, plugin.codeContent)
     return fullPath

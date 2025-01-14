@@ -1,6 +1,6 @@
 import { WechatMsg } from "@/wechat";
 import { Express } from "express";
-import { getWechatEmitter } from "@/wechat"
+import { getWechatControl } from "@/wechat"
 
 export default function (app: Express) {
 
@@ -9,7 +9,7 @@ export default function (app: Express) {
 
     const body = req.body as WechatMsg
  
-    getWechatEmitter().emit("message",body)
+    getWechatControl().receive(JSON.stringify(body))
 
     return res.status(200).json({
         success:true

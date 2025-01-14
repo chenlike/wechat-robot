@@ -39,6 +39,7 @@ export class WechatControl {
         msg.time = dayjs.unix(msg.ts).format('YYYY-MM-DD HH:mm:ss');
 
         try {
+
             await WxMessages.create(msg)
 
             state.emitter.emit("message", msg)

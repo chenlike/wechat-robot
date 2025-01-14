@@ -35,7 +35,7 @@ export class CronService extends Service {
 
 
         const jobName = `${pluginId}:${key}:${room_wxid}`
-
+        console.log("注册定时任务", jobName, rule)
         if (schedule.scheduledJobs[jobName] != undefined) {
             schedule.cancelJob(jobName)
         }

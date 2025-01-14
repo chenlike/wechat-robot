@@ -17,10 +17,8 @@ async function main() {
     logger.info("[初始化web]")
     initWeb()
 
-
     logger.info("[初始化微信Control]")
     initWechat()
-
 
     logger.info("[初始化基础服务Service]")
     initBasicService();
@@ -28,7 +26,6 @@ async function main() {
     logger.info("[初始化插件Plugin]")
     await initPlugins()
 
-    
     logger.info("[初始化消息分发]")
     await initDispatch()
 

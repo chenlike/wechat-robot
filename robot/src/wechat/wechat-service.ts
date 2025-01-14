@@ -20,6 +20,14 @@ export class WechatService extends Service {
     public api:typeof api = api
     
 
+    // 定义一个event
+
+    
+
+
+
+
+
 
 }
 
