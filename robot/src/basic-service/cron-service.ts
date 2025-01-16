@@ -1,20 +1,16 @@
-import { Service, Context } from "cordis"
 import { getPluginScope } from "@/plugin"
 import schedule from "node-schedule"
-
-
 
 /**
  * 微信相关服务 包含操作微信相关的东西
  */
-export class CronService extends Service {
+export class CronService  {
 
 
 
-    constructor(ctx: Context) {
-        super(ctx, 'cron', true);
-        console.log("Cron服务初始化")
+    constructor() {
 
+        
         // 清空所有的定时任务
         for (let job in schedule.scheduledJobs) {
             schedule.cancelJob(schedule.scheduledJobs[job])

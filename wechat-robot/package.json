@@ -1,13 +1,13 @@
 {
   "name": "wechat-robot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "web.js",
   "repository": "https://github.com/chenlike/wechat-robot.git",
   "author": "clkclk <clkclk1997@foxmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c && cross-env RUN_MODE=development node ./dist/robot.js"
+    "dev:web": "rollup -c && cross-env RUN_MODE=development node ./dist/web.js"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.8",

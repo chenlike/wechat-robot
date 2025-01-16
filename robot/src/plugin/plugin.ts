@@ -1,21 +1,23 @@
 import logger from "@/common/logger";
-import { Context, Service, ForkScope } from 'cordis'
 import { emitter } from "./emitter";
+
+import { BasePlugin,WxPluginContext } from "./types"
+
 
 
 
 export interface WxPlugin {
     pluginId: string; // 插件id 唯一
+    roomId:string;
+    configJSON: string; // 配置json
+    
     filePath: string; // 插件文件路径
 
-    scope?: ForkScope; // 插件实例
+    scope?: BasePlugin; // 插件实例
 
 }
 
 
-
-
-export const pluginContext = new Context();
 
 
 const plugins = new Map<string, WxPlugin>()
@@ -26,6 +28,8 @@ function loadPlugin(filePath: string) {
     delete require.cache[filePath];
     return import(`${filePath}`); // 添加时间戳避免缓存
 }
+
+
 
 
 export async function loadNewPlugin(plugin: WxPlugin) {
@@ -46,9 +50,15 @@ export async function loadNewPlugin(plugin: WxPlugin) {
 
     let module = await loadPlugin(filePath)
     const pluginClass = module.default;
-    const scope = pluginContext.plugin(pluginClass, {
-        pluginId: plugin.pluginId
-    });
+
+
+
+
+
+
+    const scope = new pluginClass()
+
+
     plugin.scope = scope;
 
     plugins.set(plugin.pluginId, plugin);

@@ -13,3 +13,10 @@ export interface PluginEvents {
 export const emitter = new EventEmitter() as TypedEmitter<PluginEvents>
 
 
+
+
+
+
+export interface RoomEvent {
+
+}
