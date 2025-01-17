@@ -12,6 +12,28 @@ export function getWsServer(){
     return state.server
 }
 
+/**
+ * 重新加载插件
+ * @param pluginId 
+ * @param roomId 
+ */
+export async function reloadPlugin(pluginId:string,roomId:string){
+    if(state.server){
+        let content = JSON.stringify(<WsMessage>{
+            type:"plugin/reload",
+            data:{
+                pluginId,
+                roomId
+            }
+        })
+        
+        state.server.clients.forEach(client=>{
+            client.send(content)
+        })
+    }
+}
+
+
 
 
 export async function initDispatch(){

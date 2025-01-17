@@ -54,6 +54,8 @@ export default {
 	output: {
 		dir: 'dist',
 		format: 'cjs',
-		entryFileNames: '[name].js'
+		entryFileNames: '[name].js', // 确保文件名不会发生变化
+		chunkFileNames: '[name].js', // 确保生成的 chunk 文件名也固定
+		assetFileNames: '[name][extname]' // 确保生成的资源文件名固定
 	}
 }

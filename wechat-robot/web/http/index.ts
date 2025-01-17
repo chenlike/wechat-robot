@@ -6,9 +6,12 @@ import bodyParser from "body-parser"
 
 
 import callbackRoutes from "./controller/callback";
+import authRoutes from "./controller/auth";
+import roomRoutes from "./controller/room";
+import pluginRoutes from "./controller/plugin";
+
 
 const app = express()
-
 
 function initRoutes() {
 
@@ -24,20 +27,31 @@ function initRoutes() {
     app.use(bodyParser.json())
 
 
-    callbackRoutes(app)
+    // controllers 
 
+    app.get("/api/healthcheck",async (req,res)=>{
+        return res.send({success:true})
+    })
+    callbackRoutes(app)
+    authRoutes(app)
+    roomRoutes(app)
+    pluginRoutes(app)
+    
 }
 
 
-export function initHttp() {
+export async function initHttp() {
 
-    let port = parseInt(process.env.PORT ?? "") ?? 6000;
-    let hostname = process.env.HOST ?? "0.0.0.0"
+    try{
+        let port = parseInt(process.env.PORT ?? "") ?? 6000;
+        let hostname = process.env.HOST ?? "0.0.0.0"
+        // 初始化路由
+        initRoutes()
+        app.listen(port,hostname, () => {
+            logger.info(`web 监听: http://${hostname}:${port}`)
+        })
+    }catch(e){
+        logger.error(e)
+    }
 
-    // 初始化路由
-    initRoutes()
-
-    app.listen(port, hostname, () => {
-        logger.info(`web 监听: http://${hostname}:${port}`)
-    })
 }

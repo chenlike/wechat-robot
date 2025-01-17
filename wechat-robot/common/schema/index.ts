@@ -161,3 +161,26 @@ export const WxChatRoomPlugins = mongoose.model<WxChatRoomPlugin>(
     config: String,
   })
 );
+
+
+export interface WxChatroom extends Document {
+  /**
+   * 群聊id
+   */
+  chatroomId: string;
+
+  /**
+   * 群聊名称
+   */
+  chatroomName: string;
+
+}
+
+// 定义群聊模型
+export const WxChatrooms = mongoose.model<WxChatroom>(
+  "WxChatroom",
+  new Schema<WxChatroom>({
+    chatroomId: String,
+    chatroomName: String,
+  })
+);
