@@ -1,5 +1,5 @@
 import logger from "@common/logger";
-import { getWechatEmitter } from "@common/wechat";
+import { getWechatEmitter, initWechat } from "@common/wechat";
 import WebSocket from "ws";
 import { listenHealthCheck } from "./healthcheck";
 
@@ -16,6 +16,7 @@ export function getWsServer(){
 
 export async function initDispatch(){
     
+    initWechat()
 
     let port = parseInt(process.env.WS_PORT ?? "6001")
     state.server = new WebSocket.Server({
@@ -42,10 +43,11 @@ export async function initDispatch(){
 
         if(state.server){
             // 推送给每个客户端
-            let content = JSON.stringify({
+            let content = JSON.stringify(<WsMessage>{
                 type:"wechat/message",
                 data:msg
             })
+            
             state.server.clients.forEach(client=>{
                 client.send(content)
             })

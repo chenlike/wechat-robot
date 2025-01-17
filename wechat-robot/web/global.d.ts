@@ -4,3 +4,9 @@ interface Result<T = any>{
     msg?:string
     data?:T
 }
+
+
+interface WsMessage<T = any>{
+    type:string,
+    data:T
+}

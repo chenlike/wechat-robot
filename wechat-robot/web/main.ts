@@ -34,6 +34,7 @@ async function main() {
     logger.info("[初始化http]")
     initHttp()
 
+    
     logger.info("[初始化Ws分发dispatch]")
     initDispatch()
 

@@ -42,6 +42,11 @@ export class WechatControl {
 
             await WxMessages.create(msg)
 
+            // 如果时间超过60秒，就不再发送
+            if (Date.now() - msg.ts * 1000 > 60000) {
+                console.log("消息超过60秒，不再发送 消息时间,", msg.time )
+                return
+            }
             state.emitter.emit("message", msg)
     
         } catch (e) {
@@ -71,7 +76,7 @@ function getWechatEmitter() {
 }
 
 function initWechat() {
-
+    console.log("init wechat", process.env.WECHATFERRY_HOST)
     initApiHost(process.env.WECHATFERRY_HOST ?? "")
 
     state.wechat = new WechatControl()

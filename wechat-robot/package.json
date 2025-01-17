@@ -7,7 +7,9 @@
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
-    "dev:web": "rollup -c && cross-env RUN_MODE=development node ./dist/web.js"
+    "dev:web": "rollup -c && node ./dist/web.js",
+    "dev:plugin": "rollup -c && node ./dist/plugin.js",
+    "dev": "rollup -c && node ./dist/web.js & node ./dist/plugin.js"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.8",

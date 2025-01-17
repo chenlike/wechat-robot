@@ -1,8 +1,13 @@
 import * as api from "@common/wechat/wechat-api"
-import { Contact, SendRichTextReq } from "@common/wechat";
+import { Contact, SendRichTextReq, WechatMsg } from "@common/wechat";
 import { WxChatRoomPlugins, WxChatRoomPlugin, WxPlugin, WxPlugins } from "@common/schema";
+
+
+
 import vm from "vm";
 import logger from "@common/logger";
+import { EventEmitter } from "events"
+import { PluginService } from "./services/base";
 
 
 
@@ -33,13 +38,17 @@ export interface PluginContext {
         [key: string]: any
     }
 
+    /**
+     * 全局事件
+     */
+    event: EventEmitter,
 
     /**
      * 发送消息
      * @param msg 
      * @param aters 
      */
-    sendText(msg: string, aters: string): Promise<boolean>;
+    sendText(msg: string, aters: string ): Promise<boolean>;
     /**
      * 发送卡片消息
      * @param req 
@@ -68,6 +77,22 @@ export interface PluginContext {
 
 }
 
+/**
+ * 插件
+ */
+export interface PluginScope {
+
+
+    onMessage: (msg: WechatMsg) => Promise<any>
+
+
+}
+
+
+
+
+
+
 
 
 export interface PluginInstace {
@@ -92,10 +117,37 @@ export interface PluginInstace {
     /**
      * vm实例
      */
-    vmScope: any
+    vmScope: PluginScope,
 
 
 }
+
+
+
+
+const event = new EventEmitter()
+
+
+const services: Map<string, PluginService> = new Map();
+
+/**
+ * 添加基础service  (需要在组件加载前就完成)
+ * @param name 
+ * @param ServiceClass 对应的class 
+ */
+export async function addService(name: string, ServiceClass: any) {
+    try{
+        let service = new ServiceClass(event);
+        await service.init()
+        console.log(`[service] add ${name}  `)
+        services.set(name, service)
+    }catch(err){
+        logger.error(err)
+        logger.error(`add service ${name} 失败 `)
+    }
+}
+
+
 
 function buildPluginContext(roomPlugin: WxChatRoomPlugin): PluginContext {
     const ctx: PluginContext = {
@@ -103,9 +155,10 @@ function buildPluginContext(roomPlugin: WxChatRoomPlugin): PluginContext {
         pluginId: roomPlugin.pluginId,
         config: roomPlugin.config,
         service: {
-            wechat: api
+            wechat: api,
         },
-        sendText: async (msg: string, aters: string) => {
+        event: event,
+        sendText: async (msg: string, aters: string = "") => {
             return await api.sendText(roomPlugin.chatroomId, msg, aters)
         },
         sendRichText: async (req: SendRichTextReq) => {
@@ -126,6 +179,11 @@ function buildPluginContext(roomPlugin: WxChatRoomPlugin): PluginContext {
         },
 
     }
+
+    // 注入service
+    for (let [key, value] of services) {
+        ctx.service[key] = value
+    }
     return ctx;
 }
 
@@ -138,11 +196,19 @@ const plugins: Map<string, PluginInstace> = new Map();
 
 
 
-
-
-async function removePlugin(pluginId: string, roomId: string) {
-
+/**
+ * 移除插件
+ * @param pluginId 
+ * @param roomId 
+ */
+export async function removePlugin(pluginId: string, roomId: string) {
+    const key = `${pluginId}-${roomId}`;
+    if (plugins.has(key)) {
+        // 从 plugins 中删除实例
+        plugins.delete(key);
+    }
 }
+
 
 
 /**
@@ -152,22 +218,22 @@ async function removePlugin(pluginId: string, roomId: string) {
  */
 export async function loadPlugin(pluginId: string, roomId: string) {
 
+    // todo:分离数据库部分代码
+
     // 从数据库获得配置
     let record = await WxChatRoomPlugins.findOne({
-        where: {
-            pluginId: pluginId,
-            chatroomId: roomId
-        }
+        pluginId: pluginId,
+        chatroomId: roomId
     })
+    console.log(`加载插件${pluginId}到群聊${roomId}`,record)
     let plugin = await WxPlugins.findOne({
-        where: {
-            pluginId: pluginId
-        }
+        pluginId: pluginId
     });
 
     if (plugin == null || record == null || record.enable == false) {
         // 处理移除
         await removePlugin(pluginId, roomId)
+        console.log(`插件${pluginId}未启用或不存在`)
         return;
     }
 
@@ -198,44 +264,54 @@ export async function loadPlugin(pluginId: string, roomId: string) {
         setInterval,
         FormData
     }
-
+    let scope: PluginScope | null = null;
     try {
 
-        let scope = vm.runInNewContext(plugin.codeContent, vmContext);
-
+        let setupFunc = vm.runInNewContext(plugin.codeContent, vmContext);
+     
+        scope = setupFunc(ctx)
+        if (scope == null) {
+            logger.error("plugin setup return null")
+            return;
+        }
     } catch (err) {
-        logger.error(err);
+        logger.error(JSON.stringify(err));
+        return;
     }
 
-    
-    
-    const instance:PluginInstace = {
+
+
+    const instance: PluginInstace = {
         pluginId: pluginId,
         roomId: roomId,
         context: ctx,
-        vmContext: vmContext
+        vmContext: vmContext,
+        vmScope: scope!
     }
+
+
     plugins.set(key, instance)
 
+}
 
 
+/**
+ * 接收到消息
+ * @param msg 
+ */
+export async function receiveMessage(msg: WechatMsg) {
 
-
-
-
-
+    for(let plugin of plugins.values()){
+        // 判断是否属于该群聊的消息
+        if(plugin.roomId == msg.roomid){
+            plugin.vmScope.onMessage(msg)
+        }
+    }
 }
 
 
 
-export function initPluginVM() {
 
 
 
 
-
-
-
-
-
-}

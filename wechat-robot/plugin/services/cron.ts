@@ -1,24 +1,21 @@
-import { getPluginScope } from "@/plugin"
 import schedule from "node-schedule"
+import { PluginService } from "./base";
+
+import { EventEmitter } from "events"
 
 /**
  * 微信相关服务 包含操作微信相关的东西
  */
-export class CronService  {
+export class CronService extends PluginService {
 
 
-
-    constructor() {
-
-        
-        // 清空所有的定时任务
-        for (let job in schedule.scheduledJobs) {
-            schedule.cancelJob(schedule.scheduledJobs[job])
-        }
-
-        // 等待重新注册
+    constructor(event: EventEmitter) {
+        super(event)
     }
 
+    async init(){
+        
+    }
 
     /**
      * 注册定时任务
@@ -37,20 +34,13 @@ export class CronService  {
         }
 
         schedule.scheduleJob(jobName, rule, async () => {
-
-
-
-            // 查找插件进行触发
-            let scope = await getPluginScope(pluginId)
-
-            // 触发插件
-            scope?.ctx.emit("cron/trigger", {
+            
+            this.event.emit("cron/trigger", {
                 pluginId,
                 key,
                 room_wxid,
                 rule
-            } as any)
-
+            })
 
         });
     }
