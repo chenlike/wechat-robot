@@ -48,11 +48,11 @@ function connectWebSocket() {
     ws.on("message", (data) => {
         let content = data.toString("utf-8");
         let msg = JSON.parse(content) as WsMessage;
-
+        console.log("ws message:", msg);
         switch (msg.type) {
             case "plugin/reload":
                 // 重新加载某个插件
-                reloadPlugin(msg.data.pluginId, msg.data.chatroomId);
+                reloadPlugin(msg.data.pluginId, msg.data.roomId);
                 break;
             case "plugin/reloadAll":
                 // 重新加载所有插件

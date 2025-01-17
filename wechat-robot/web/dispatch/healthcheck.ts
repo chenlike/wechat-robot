@@ -24,8 +24,9 @@ export function listenHealthCheck(server: WebSocket.Server) {
                     console.log("Plugin process restarted successfully");
                     console.log(stdout);
                 });
-                // 如果已经重启了 plugin 进程，更新一下最后心跳时间 防止还没起来又被重启了
-                healthState.lastTick = Date.now();
+                // 如果已经重启了 plugin 进程，更新一下最后心跳时间 防止还没起来又被重启了  再加20秒
+                
+                healthState.lastTick = Date.now() + 20000;
             }
         }, 5000); // 每 5 秒检查一次心跳
 

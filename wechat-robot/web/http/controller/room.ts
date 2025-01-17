@@ -13,11 +13,12 @@ export default function(app:Express){
     // 同步房间信息
     app.post("/api/room/sync",auth,async (req,res)=>{
 
+        console.log("sync room")
         let contacts = await api.getContacts()
 
         // 过滤wxid不是以@chatroom结尾的
         let rooms = contacts.filter(contact=>contact.wxid.endsWith("@chatroom"))
-
+        console.log(rooms)
 
         // upsert到数据库  chatroomId 唯一
         for(let room of rooms){

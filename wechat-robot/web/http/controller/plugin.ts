@@ -17,7 +17,7 @@ export default function(app:Express){
         // 插件id不能重复
         let exist = await WxPlugins.findOne({pluginId:plugin.pluginId})
         if(exist){
-            return res.send(<Result>{ success:false,message:"插件id已存在" })
+            return res.send(<Result>{ success:false,msg:"插件id已存在" })
         }
 
 
@@ -34,7 +34,7 @@ export default function(app:Express){
         // 检查id是否存在
         let exist = await WxPlugins.findOne({pluginId:plugin.pluginId})
         if(!exist){
-            return res.send(<Result>{ success:false,message:"插件id不存在" })
+            return res.send(<Result>{ success:false,msg:"插件id不存在" })
         }
 
         await WxPlugins.updateOne({pluginId:plugin.pluginId},plugin)
@@ -81,7 +81,7 @@ export default function(app:Express){
         let chatroomId = req.params.chatroomId
 
         let plugins = await WxChatRoomPlugins.find({chatroomId})
-
+        
         res.send(<Result>{success:true,data:plugins})
     })
 

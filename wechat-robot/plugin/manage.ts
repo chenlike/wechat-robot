@@ -10,7 +10,7 @@ import { loadPlugin } from "./plugin-vm";
  * @param chatroomId 
  */
 export async function reloadPlugin(pluginId:string,chatroomId:string){
-    console.log(`加载插件${pluginId}到群聊${chatroomId}`)
+    console.log(`reload加载插件${pluginId}到群聊${chatroomId}`)
 
     await loadPlugin(pluginId,chatroomId)
 
