@@ -27,7 +27,8 @@ export async function loadAllPlugins(){
         return pluginRoom.enable
     })
     for(let pluginRoom of pluginRooms){
-        await loadPlugin(pluginRoom.pluginId,pluginRoom.chatroomId)
+        // 异步加载插件
+        loadPlugin(pluginRoom.pluginId,pluginRoom.chatroomId)
     }
 
 }

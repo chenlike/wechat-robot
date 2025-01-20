@@ -116,6 +116,14 @@ export default function(app:Express){
 
         res.send(<Result>{success:true,msg:"OK"})
     })
+
+    // 获得插件信息
+    app.post("/api/plugin/getInfo",auth,async (req,res)=>{
+        let pluginId = req.body.pluginId
+
+        let plugin = await WxPlugins.findOne({pluginId})
+        res.send(<Result>{success:true,data:plugin})
+    })
     
 
 }

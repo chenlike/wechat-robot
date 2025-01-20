@@ -5,7 +5,7 @@
             <el-button @click="getChatroom">刷新</el-button>
         </div>
         <div>
-            <el-table :data="data" border stripe>
+            <el-table v-loading="loading" :data="data" border stripe>
                 <el-table-column prop="chatroomName" label="名称"></el-table-column>
                 <el-table-column prop="chatroomId" label="id"></el-table-column>
                 <el-table-column prop="opt" label="操作">
@@ -69,6 +69,7 @@ export default defineComponent({
         return {
             data: [],
             syncLoading: false,
+            loading: false,
             dialog: {
                 visible: false,
                 chatroomId: "",
@@ -87,8 +88,10 @@ export default defineComponent({
 
     methods: {
         async getChatroom() {
+            this.loading = true;
             const res = await this.$http.get('/api/room/list');
             this.data = res.data.data;
+            this.loading = false;
         },
         async syncChatroom() {
             this.syncLoading = true;

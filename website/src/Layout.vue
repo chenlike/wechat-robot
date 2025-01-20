@@ -7,9 +7,8 @@
             </el-menu>
         </div>
         <div class="layout-content" v-if="loaded">
-            <keep-alive>
-                <router-view></router-view>
-            </keep-alive>
+
+            <router-view></router-view>
         </div>
         <el-dialog v-model="loginDialog.visiable" title="登录" width="500" :close-on-click-modal="false" :close-on-press-escape="false" :show-close="false">
             
@@ -31,7 +30,7 @@ import { state } from "./http"
 export default defineComponent({
     data() {
         return {
-            activeIndex: "chatroom",
+            activeIndex: "plugin",
             loaded: false,
             loginDialog: {
                 visiable: false,

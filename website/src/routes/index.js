@@ -4,15 +4,30 @@ import Layout from '../Layout.vue'
 const routes = [
 
     {
-        path: '/layout', 
+        path: '/layout',
         component: Layout,
         children: [
-            { path: '/', redirect:"/plugin" },
+            { path: '/', redirect: "/plugin" },
 
-            { path:"/plugin" ,component:()=>import("../views/Plugin.vue") },
-            { path:"/plugin-editor" ,component:()=>import("../views/PluginEditor.vue") },
+            {
+                path: "/plugin", component: () => import("../views/Plugin.vue"), meta: {
+                    keepAlive: false
+                }
+            },
+            {
+                path: "/plugin-editor",
+                component: () => import("../views/PluginEditor.vue"),
+                meta: {
+                    keepAlive: false
+                }
+            },
 
-            { path:"/chatroom" ,component:()=>import("../views/Chatroom.vue") },
+            {
+                path: "/chatroom", component: () => import("../views/Chatroom.vue"),
+                meta: {
+                    keepAlive: false
+                }
+            },
 
         ]
     },
