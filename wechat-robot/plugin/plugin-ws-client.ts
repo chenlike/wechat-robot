@@ -48,7 +48,7 @@ function connectWebSocket() {
     ws.on("message", (data) => {
         let content = data.toString("utf-8");
         let msg = JSON.parse(content) as WsMessage;
-        console.log("ws message:", msg);
+        // console.log("ws message:", msg);
         switch (msg.type) {
             case "plugin/reload":
                 // 重新加载某个插件

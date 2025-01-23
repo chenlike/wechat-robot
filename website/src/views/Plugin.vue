@@ -49,7 +49,7 @@ export default defineComponent({
                     type: 'warning',
                 }
             )
-            let res = await this.$http.delete(`/api/plugin/delete`, {
+            let res = await this.$http.post(`/api/plugin/delete`, {
                 pluginId: row.pluginId
             })
             if (res.data.code == 0) {

@@ -198,9 +198,10 @@ async function refreshPyq(id:number):Promise<boolean> {
  * @returns 
  */
 async function queryRoomMembers(roomId:string):Promise<t.Contact[]> {
-    const res = await http.get<t.WCFResult<t.GetContactsRes>>(`/room-members/${roomId}`)
-    
-    return res.data.data.contacts
+    let rmid = encodeURIComponent(roomId)
+
+    const res = await http.get<t.WCFResult<t.Contact[]>>(`/query-room-member?room_id=${rmid}`)
+    return res.data.data
 }
 
 

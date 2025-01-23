@@ -22,7 +22,7 @@ export interface AcceptNewFriendReq {
 }
 
 export interface GetContactsRes{
-    contacts:Contact[]
+    data:Contact[]
 }
 
 /**
