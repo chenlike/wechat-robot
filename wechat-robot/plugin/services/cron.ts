@@ -35,7 +35,7 @@ export class CronService extends PluginService {
 
         schedule.scheduleJob(jobName, rule, async () => {
             
-            this.event.emit("cron/trigger", {
+            this.event.emit("cron/trigger/" + key, {
                 pluginId,
                 key,
                 room_wxid,
