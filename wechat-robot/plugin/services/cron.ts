@@ -11,10 +11,19 @@ export class CronService extends PluginService {
 
     constructor(event: EventEmitter) {
         super(event)
+        
     }
 
     async init(){
-        
+        this.event.on("plugin/remove", ({ pluginId }) => {
+            // 移除pluginId开头的定时任务
+            for (let jobName in schedule.scheduledJobs) {
+                if (jobName.startsWith(pluginId)) {
+                    schedule.cancelJob(jobName)
+                    console.log("移除定时任务", jobName)
+                }
+            }
+        })
     }
 
     /**

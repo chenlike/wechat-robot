@@ -206,6 +206,10 @@ export async function removePlugin(pluginId: string, roomId: string) {
     if (plugins.has(key)) {
         // 从 plugins 中删除实例
         plugins.delete(key);
+        // 删除实例时 通知service处理后续工作
+        event.emit("plugin/remove", {
+            pluginId,
+        });
     }
 }
 
